@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: private-docker-image
+  namespace: configuration
+spec:
+  containers:
+    - name: test-container
+      image: quay.io/dridi_walid/hello-world:alpine
+  imagePullSecrets:
+  - name: regcred
