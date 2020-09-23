@@ -1,0 +1,19 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: readiness-pod
+spec:
+  containers:
+    - name: server
+      image: python:2.7-alpine
+      readinessProbe:
+        initialDelaySeconds: 10
+        failureThreshold: 1
+        httpGet:
+          path: /
+          port: 8000
+      env:
+        - name: DELAY_START
+          value: 5
+      command: ["/bin/sh"]
+      args: ["-c", "echo 'Sleeping...'; sleep $(DELAY_START); echo 'Starting server...'; python -m SimpleHTTPServer"]
