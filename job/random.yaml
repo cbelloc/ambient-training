@@ -1,0 +1,17 @@
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: random
+spec:
+  template:
+    metadata:
+      name: random
+    spec:
+      containers:
+        - name: random
+          image: busybox
+          command: 
+          - "sh"
+          - "-c"
+          - "[ $(( $RANDOM % 100 + 1)) -gt 50 ]"
+      restartPolicy: Never
