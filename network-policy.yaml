@@ -1,0 +1,47 @@
+# Allow traffic from nginx only to redis pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: network-policy-nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: network-policy-nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: network-policy-redis
+  labels:
+    app: redis
+spec:
+  containers:
+  - image: redis:alpine
+    name: network-policy-redis
+    ports:
+    - containerPort: 6379
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx
+  policyTypes:
+  - Ingress
+  - Egress
+  egress: 
+  - to:
+      - podSelector:
+          matchLabels:
+            app: redis
+    ports:
+    - protocol: TCP
+      port: 6379
