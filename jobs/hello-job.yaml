@@ -1,0 +1,17 @@
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: hello
+spec:
+  template:
+    metadata:
+      name: hello
+    spec:
+      containers:
+        - name: hello
+          image: busybox
+          command: 
+          - "sh"
+          - "-c"
+          - "echo hello;sleep 30;echo world"
+      restartPolicy: Never
